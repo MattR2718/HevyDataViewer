@@ -10,6 +10,7 @@
 
 #include "exercise.h"
 #include "loadData.h"
+#include "workout.h"
 
 #define U8(_S)    (const char*)u8##_S
 
@@ -25,7 +26,10 @@ int main(){
     std::vector<Exercise> exercises;
     std::vector<std::string> exerciseNames;
 
-    std::vector<std::string> headings = {"title","start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"};
+    std::vector<Workout> workouts;
+
+    std::vector<std::string> exerciseHeadings = {"title","start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"};
+    std::vector<std::string> workoutHeadings = {"title", "start_time", "end_time", "description", "num_exercises", "num_sets", "total_volume_kg", "total_distance_km"};
 
     sf::Clock deltaClock;
     while (window.isOpen()){
@@ -49,6 +53,7 @@ int main(){
         if(fileSelected){
             exercises = loadData(path);
             exerciseNames = getNames(exercises);
+            workouts = createWorkouts(exercises);
         }
 
         ImGui::Begin("Data Options", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
@@ -62,15 +67,37 @@ int main(){
         ImGui::SetWindowPos(ImVec2(WIDTH/3, 0));
         ImGui::SetWindowSize(ImVec2(2*WIDTH/3, HEIGHT/3));
 
-        if (ImGui::BeginTable("DataTable", 14, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)){
-            for(auto& h : headings){
-                ImGui::TableSetupColumn(h.c_str());
+        if(ImGui::BeginTabBar("DataTabs")){
+            if(ImGui::BeginTabItem("All Exercises")){
+                if (ImGui::BeginTable("ExerciseDataTable", exerciseHeadings.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)){
+                    for(auto& h : exerciseHeadings){
+                        ImGui::TableSetupColumn(h.c_str());
+                    }
+                    ImGui::TableHeadersRow();
+                    for (auto& e : exercises){
+                        e.tableRow();
+                    }
+                    ImGui::EndTable();
+                }
+                ImGui::EndTabItem();
             }
-            ImGui::TableHeadersRow();
-            for (auto& e : exercises){
-                e.tableRow();
+
+            if(ImGui::BeginTabItem("All Workouts")){
+                if (ImGui::BeginTable("WorkoutDataTable", workoutHeadings.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)){
+                    for(auto& h : workoutHeadings){
+                        ImGui::TableSetupColumn(h.c_str());
+                    }
+                    ImGui::TableHeadersRow();
+                    for(auto& w : workouts){
+                        w.tableRow();
+                    }
+
+                    ImGui::EndTable();
+                }
+                ImGui::EndTabItem();
             }
-            ImGui::EndTable();
+
+            ImGui::EndTabBar();
         }
 
         ImGui::End();
