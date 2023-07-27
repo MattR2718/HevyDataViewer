@@ -14,6 +14,8 @@ public:
     Date();
     Date(std::string s);
 
+    std::string string();
+
 private:
 
 

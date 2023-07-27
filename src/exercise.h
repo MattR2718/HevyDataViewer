@@ -2,6 +2,10 @@
 #include <iostream>
 #include <string>
 
+#include <SFML/Graphics.hpp>
+#include <imgui.h>
+#include <imgui-SFML.h>
+
 #include "date.h"
 
 struct Exercise_Data{
@@ -25,6 +29,8 @@ class Exercise{
 public:
     Exercise_Data data;
     Exercise(std::string s);
+
+    void tableRow();
 
 private:
 

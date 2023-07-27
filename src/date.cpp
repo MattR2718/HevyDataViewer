@@ -21,3 +21,7 @@ Date::Date(std::string s){
     this->hour = std::stoi(words[3].substr(0, 2));
     this->min = std::stoi(words[3].substr(3, 2));
 }
+
+std::string Date::string(){
+    return std::to_string(this->day) + " " + this->month + " " + std::to_string(this->year) + " " + std::to_string(this->hour) + ":" + std::to_string(this->min);
+}

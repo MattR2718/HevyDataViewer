@@ -22,7 +22,7 @@ Exercise::Exercise(std::string s){
 
     for(auto& w : words){
         //std::cout<<"- " << w<<'\n';
-        if(w.length() == 0){ w = "0"; }
+        if(w.length() == 0){ w = "-1"; }
     }
 
     this->data.title = words[0].substr(1, words[0].length() - 2);
@@ -41,4 +41,36 @@ Exercise::Exercise(std::string s){
     this->data.duration_seconds = std::stof(words[12]);
     this->data.rpe = std::stof(words[13]);
 
+}
+
+void Exercise::tableRow(){
+    ImGui::TableNextColumn();
+    ImGui::Text(this->data.title.c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(this->data.start_time.string().c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(this->data.start_time.string().c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(this->data.description.c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(this->data.exercise_title.c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(std::to_string(this->data.superset_id).c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(this->data.exercise_notes.c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(std::to_string(this->data.set_index).c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(this->data.set_type.c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(std::to_string(this->data.weight_kg).c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(std::to_string(this->data.reps).c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(std::to_string(this->data.distance_km).c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(std::to_string(this->data.duration_seconds).c_str());
+    ImGui::TableNextColumn();
+    ImGui::Text(std::to_string(this->data.rpe).c_str());
+    
 }
