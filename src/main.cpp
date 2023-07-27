@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <imgui.h>
 #include <imgui-SFML.h>
+#include <implot.h>
 #include <nfd.h>    
 
 #include "exercise.h"
@@ -13,6 +14,11 @@
 #include "workout.h"
 
 #define U8(_S)    (const char*)u8##_S
+
+enum class data_choice{
+    Exercise = 0,
+    Workout
+};
 
 int main(){
     int WIDTH = sf::VideoMode::getDesktopMode().width * 0.75;
@@ -30,6 +36,8 @@ int main(){
 
     std::vector<std::string> exerciseHeadings = {"title","start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"};
     std::vector<std::string> workoutHeadings = {"title", "start_time", "end_time", "description", "num_exercises", "num_sets", "total_volume_kg", "total_distance_km"};
+
+    data_choice dataChoice;
 
     sf::Clock deltaClock;
     while (window.isOpen()){
@@ -70,6 +78,7 @@ int main(){
         if(ImGui::BeginTabBar("DataTabs")){
             if(ImGui::BeginTabItem("All Exercises")){
                 if (ImGui::BeginTable("ExerciseDataTable", exerciseHeadings.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)){
+                    dataChoice = data_choice::Exercise;
                     for(auto& h : exerciseHeadings){
                         ImGui::TableSetupColumn(h.c_str());
                     }
@@ -84,6 +93,7 @@ int main(){
 
             if(ImGui::BeginTabItem("All Workouts")){
                 if (ImGui::BeginTable("WorkoutDataTable", workoutHeadings.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)){
+                    dataChoice = data_choice::Workout;
                     for(auto& h : workoutHeadings){
                         ImGui::TableSetupColumn(h.c_str());
                     }
@@ -102,7 +112,14 @@ int main(){
 
         ImGui::End();
 
-        ImGui::Begin("Progression Graph", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        /*
+        TODO
+        use dataChoice to decide what to show
+            If exercise, get all choices selected in table and draw graph of weight
+            If workout create custom display to display all exercises in the workout
+        */
+
+        ImGui::Begin("Data Representation", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         ImGui::SetWindowFontScale(2);
         ImGui::SetWindowPos(ImVec2(0, HEIGHT/3));
         ImGui::SetWindowSize(ImVec2(WIDTH, 2 * HEIGHT/3));
