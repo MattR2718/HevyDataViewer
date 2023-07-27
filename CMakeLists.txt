@@ -1,4 +1,16 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(HevyDataViewer VERSION 0.1.0 LANGUAGES C CXX)
 
-add_executable(HevyDataViewer main.cpp)
+find_package(SFML COMPONENTS graphics system window CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
+find_package(ImGui-SFML CONFIG)
+find_package(unofficial-nativefiledialog CONFIG REQUIRED)
+
+add_executable(${PROJECT_NAME} main.cpp)
+
+target_link_libraries(${PROJECT_NAME}
+    imgui::imgui
+    sfml-graphics sfml-system sfml-window
+    ImGui-SFML::ImGui-SFML
+    unofficial::nativefiledialog::nfd
+)
