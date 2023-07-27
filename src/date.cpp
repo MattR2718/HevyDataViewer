@@ -1,0 +1,23 @@
+#include "date.h"
+
+Date::Date(){
+    
+}
+
+Date::Date(std::string s){
+    std::stringstream ss(s);
+    std::string word;
+    std::vector<std::string> words;
+    while(ss >> word){
+        words.push_back(word);
+    }
+
+    /* for(auto& w : words){
+        std::cout<<"-"<<w<<"-"<<'\n';
+    } */
+    this->day = std::stoi(words[0]);
+    this->month = words[1];
+    this->year = std::stoi(words[2].substr(0, words[2].length() - 1));
+    this->hour = std::stoi(words[3].substr(0, 2));
+    this->min = std::stoi(words[3].substr(3, 2));
+}
