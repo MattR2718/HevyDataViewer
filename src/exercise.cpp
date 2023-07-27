@@ -43,9 +43,9 @@ Exercise::Exercise(std::string s){
 
 }
 
-void Exercise::tableRow(){
-    ImGui::TableNextColumn();
-    ImGui::Text(this->data.title.c_str());
+void Exercise::tableRow(std::vector<bool>& selected, int i){
+    //std::cout<<selected.size()<<'\n';
+    
     ImGui::TableNextColumn();
     ImGui::Text(this->data.start_time.string().c_str());
     ImGui::TableNextColumn();

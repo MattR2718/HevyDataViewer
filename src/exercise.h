@@ -30,7 +30,7 @@ public:
     Exercise_Data data;
     Exercise(std::string s);
 
-    void tableRow();
+    void tableRow(std::vector<bool>& selected, int i);
 
 private:
 

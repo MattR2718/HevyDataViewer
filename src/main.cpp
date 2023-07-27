@@ -37,7 +37,10 @@ int main(){
     std::vector<std::string> exerciseHeadings = {"title","start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"};
     std::vector<std::string> workoutHeadings = {"title", "start_time", "end_time", "description", "num_exercises", "num_sets", "total_volume_kg", "total_distance_km"};
 
-    data_choice dataChoice;
+    std::vector<bool> selected;
+
+    data_choice dataChoice = data_choice::Exercise;
+    data_choice prevChoice = data_choice::Workout;
 
     sf::Clock deltaClock;
     while (window.isOpen()){
@@ -56,12 +59,31 @@ int main(){
         ImGui::SFML::Update(window, deltaClock.restart());
         window.clear(sf::Color::Black);
 
+        if(prevChoice != dataChoice){
+            prevChoice = dataChoice;
+            selected.clear();
+            if(dataChoice == data_choice::Exercise){
+                selected = std::vector<bool>(exercises.size(), false);
+            }else{
+                selected = std::vector<bool>(workouts.size(), false);
+            }
+        }
+
         auto[fileSelected, path]{displayLoadData(WIDTH, HEIGHT, savedPath)};
         dataLoaded = fileSelected;
         if(fileSelected){
             exercises = loadData(path);
             exerciseNames = getNames(exercises);
             workouts = createWorkouts(exercises);
+
+            if(dataChoice == data_choice::Exercise){
+                for(auto& e : exercises){
+                    selected.push_back(false);
+                }
+                std::cout<<exercises.size()<<'\n';
+            }else{
+                selected = std::vector<bool>(workouts.size(), false);
+            }
         }
 
         ImGui::Begin("Data Options", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
@@ -70,6 +92,8 @@ int main(){
         ImGui::SetWindowSize(ImVec2(WIDTH/6, HEIGHT/3));
         ImGui::End();
 
+        int i = 0;
+
         ImGui::Begin("Data", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         ImGui::SetWindowFontScale(2);
         ImGui::SetWindowPos(ImVec2(WIDTH/3, 0));
@@ -77,14 +101,24 @@ int main(){
 
         if(ImGui::BeginTabBar("DataTabs")){
             if(ImGui::BeginTabItem("All Exercises")){
-                if (ImGui::BeginTable("ExerciseDataTable", exerciseHeadings.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)){
+                if (ImGui::BeginTable("ExerciseDataTable", exerciseHeadings.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_Borders)){
                     dataChoice = data_choice::Exercise;
                     for(auto& h : exerciseHeadings){
                         ImGui::TableSetupColumn(h.c_str());
                     }
                     ImGui::TableHeadersRow();
+                    int i = 0;
+                    if(selected.size() > 3){ selected[2] = true; }
                     for (auto& e : exercises){
-                        e.tableRow();
+                        ImGui::TableNextColumn();
+                        //ImGui::Text(this->data.title.c_str());
+                        if(ImGui::Selectable(e.data.title.c_str(), &selected[i], ImGuiSelectableFlags_SpanAllColumns)){
+                            selected[i] = !selected[i];
+                            std::cout<<i<<'\n';
+                        }
+
+                        e.tableRow(selected, i);
+                        i++;
                     }
                     ImGui::EndTable();
                 }
