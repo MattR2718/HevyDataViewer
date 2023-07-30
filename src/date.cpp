@@ -26,6 +26,10 @@ std::string Date::string(){
     return std::to_string(this->day) + " " + this->month + " " + std::to_string(this->year) + " " + std::to_string(this->hour) + ":" + std::to_string(this->min);
 }
 
+int Date::monthNum(){
+    return monthNums[this->month];
+}
+
 /* bool Date::operator==(const Date & lhs, const Date & rhs){
     return lhs.day == rhs.day 
             && lhs.hour == rhs.hour

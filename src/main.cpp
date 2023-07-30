@@ -15,10 +15,14 @@
 #include "dataTables.h"
 
 #include "dataChoice.h"
+#include "dataRepresentation.h"
 
 #define U8(_S)    (const char*)u8##_S
 
 int main(){
+    ImGui::CreateContext();
+    ImPlot::CreateContext();
+
     int WIDTH = sf::VideoMode::getDesktopMode().width * 0.75;
     int HEIGHT = sf::VideoMode::getDesktopMode().height * 0.75;
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "HevyDataViewer");
@@ -36,6 +40,7 @@ int main(){
 
 
     DataTable dataTable(ImVec2(WIDTH/3, 0), ImVec2(2*WIDTH/3, HEIGHT/3));
+    DataRepresentation dataRepresentation(ImVec2(0, HEIGHT/3), ImVec2(WIDTH, 2 * HEIGHT/3));
 
     //data_choice dataChoice = data_choice::Exercise;
     //data_choice prevChoice = data_choice::Workout;
@@ -51,6 +56,8 @@ int main(){
                 WIDTH = event.size.width;
                 HEIGHT = event.size.height;
                 window.setView(sf::View(sf::FloatRect(0, 0, WIDTH, HEIGHT)));
+                dataTable.windowResizeUpdate(ImVec2(WIDTH/3, 0), ImVec2(2*WIDTH/3, HEIGHT/3));
+                dataRepresentation.windowResizeUpdate(ImVec2(0, HEIGHT/3), ImVec2(WIDTH, 2 * HEIGHT/3));
             }
         }
 
@@ -81,6 +88,7 @@ int main(){
         ImGui::End();
 
         dataTable.drawTable(exercises, workouts, selected);
+        dataRepresentation.drawTable(exercises, workouts, selected, dataTable.dc);
 
         /*
         TODO
@@ -89,17 +97,19 @@ int main(){
             If workout create custom display to display all exercises in the workout
         */
 
-        ImGui::Begin("Data Representation", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        /* ImGui::Begin("Data Representation", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         ImGui::SetWindowFontScale(2);
         ImGui::SetWindowPos(ImVec2(0, HEIGHT/3));
         ImGui::SetWindowSize(ImVec2(WIDTH, 2 * HEIGHT/3));
-        ImGui::End();
+        ImGui::End(); */
 
-        ImGui::ShowDemoWindow();
+        //ImGui::ShowDemoWindow();
     
         ImGui::SFML::Render(window);
         window.display();
     }
+    ImPlot::DestroyContext();
+    ImGui::DestroyContext();
 
     ImGui::SFML::Shutdown();
 }
