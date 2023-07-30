@@ -2,12 +2,13 @@
 
 Workout::Workout(const std::vector<Exercise> exercises){
     this->exercises = exercises;
-    this->num_exercises = exercises.size();
+    //this->num_exercises = exercises.size();
     this->start_time = exercises[0].data.start_time;
     this->end_time = exercises[0].data.end_time;
     this->description = exercises[0].data.description;
     this->title = exercises[0].data.title;
     for(auto& e : exercises){
+        this->num_exercises += (!e.data.set_index) ? 1 : 0;
         this->num_sets += 1;
         this->total_volume_kg += (e.data.weight_kg < 0) ? 0.0 : e.data.reps * e.data.weight_kg;
         this->total_dist_km += (e.data.distance_km < 0) ? 0.0 : e.data.reps * e.data.distance_km;

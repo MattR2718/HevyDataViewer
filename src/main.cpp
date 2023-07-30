@@ -112,7 +112,7 @@ int main(){
                     for (auto& e : exercises){
                         ImGui::TableNextColumn();
                         //ImGui::Text(this->data.title.c_str());
-                        if(ImGui::Selectable(e.data.title.c_str(), &selected[i], ImGuiSelectableFlags_SpanAllColumns)){
+                        if(ImGui::Selectable(e.data.title.c_str(), selected[i], ImGuiSelectableFlags_SpanAllColumns)){
                             selected[i] = !selected[i];
                             std::cout<<i<<'\n';
                         }
