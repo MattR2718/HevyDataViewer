@@ -15,9 +15,18 @@ Workout::Workout(const std::vector<Exercise> exercises){
     }
 }
 
-void Workout::tableRow(){
+void Workout::tableRow(std::vector<uint8_t>& selected, int i){
+    //ImGui::TableNextColumn();
+    //ImGui::Text(this->title.c_str());
+    
+    ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::Text(this->title.c_str());
+    std::string label = this->title + "##" + std::to_string(i);
+    if(ImGui::Selectable(label.c_str(), selected[i] , ImGuiSelectableFlags_SpanAllColumns)){
+        selected[i] = !selected[i];
+        std::cout<<i<<'\n';
+    }
+    
     ImGui::TableNextColumn();
     ImGui::Text(this->start_time.string().c_str());
     ImGui::TableNextColumn();

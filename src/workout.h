@@ -18,7 +18,7 @@ public:
     float total_dist_km = 0;
 
     Workout(const std::vector<Exercise> exercises);
-    void tableRow();
+    void tableRow(std::vector<uint8_t>& selected, int i);
 
 private:
 

@@ -6,7 +6,7 @@ find_package(ImGui-SFML CONFIG)
 find_package(implot CONFIG REQUIRED)
 find_package(unofficial-nativefiledialog CONFIG REQUIRED)
 
-add_executable(${PROJECT_NAME} main.cpp exercise.cpp date.cpp workout.cpp)
+add_executable(${PROJECT_NAME} main.cpp exercise.cpp date.cpp workout.cpp dataTables.cpp)
 
 target_link_libraries(${PROJECT_NAME}
     imgui::imgui

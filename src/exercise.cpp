@@ -43,8 +43,14 @@ Exercise::Exercise(std::string s){
 
 }
 
-void Exercise::tableRow(std::vector<bool>& selected, int i){
-    //std::cout<<selected.size()<<'\n';
+void Exercise::tableRow(std::vector<uint8_t>& selected, int i){
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    std::string label = this->data.title + "##" + std::to_string(i);
+    if(ImGui::Selectable(label.c_str(), selected[i] , ImGuiSelectableFlags_SpanAllColumns)){
+        selected[i] = !selected[i];
+        std::cout<<i<<'\n';
+    }
     
     ImGui::TableNextColumn();
     ImGui::Text(this->data.start_time.string().c_str());
@@ -72,5 +78,13 @@ void Exercise::tableRow(std::vector<bool>& selected, int i){
     ImGui::Text(std::to_string(this->data.duration_seconds).c_str());
     ImGui::TableNextColumn();
     ImGui::Text(std::to_string(this->data.rpe).c_str());
+
+    /* ImGui::TableNextColumn();
+    if(ImGui::Selectable(this->data.title.c_str()), selected[i], ImGuiSelectableFlags_SpanAllColumns){
+        selected[i] = !selected[i];
+        //std::cout<<i<<'\n';
+    } */
+
+    //ImGui::TableNextRow();
     
 }
